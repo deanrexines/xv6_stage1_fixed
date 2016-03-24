@@ -153,6 +153,10 @@ fork(void)
     if(proc->ofile[i])
       np->ofile[i] = filedup(proc->ofile[i]);
   np->cwd = idup(proc->cwd);
+  np->ticks = 0;
+  np->alarm = 0;
+  np->sighandlers[0] = (sighandler_t) -1;;
+  np->sighandlers[1] = (sighandler_t) -1;;
 
   safestrcpy(np->name, proc->name, sizeof(proc->name));
  

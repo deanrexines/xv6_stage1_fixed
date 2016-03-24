@@ -30,3 +30,7 @@ SYSCALL(sbrk)
 SYSCALL(sleep)
 SYSCALL(uptime)
 SYSCALL(halt)
+#SYSCALL(signal)
+SYSCALL(reg_signal)
+SYSCALL(alarm)
+

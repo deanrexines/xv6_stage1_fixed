@@ -102,3 +102,40 @@ sys_halt(void)
     outw(0xB004, 0x2000);
   return 0;
 }
+
++// Register a signal handler
++sighandler_t
+sys_reg_signal_handler(void)
+{
+    int sig;
+    sighandler_t handler;
+   // get the signal from the first argument
+    
+    if (argint(0, &sig) < 0 || argint(1, (int *)&handler) < 0) {
+        cprintf("Argument error\n");
+        return (sighandler_t)-1;
+    }
+    sighandler_t prev = proc->sighandlers[sig];
+    proc->sighandlers[sig] = handler;
+
+    return prev;
+}
+
+// Register an alarm for the process.
+// Any new alarm overwrites any previously scheduled alarm.
+// Returns: 0 on success, -1 on error
+int
+sys_alarm(void)
+{
+    int s;
+    if (argint(0, &s) < 0) {
+        cprintf("Argument error\n");
+        return -1;
+    }
+    if (s > 0) {
+        proc->ticks = s*100;
+    } else {
+        return -1;
+    }
+    return 0;
+}

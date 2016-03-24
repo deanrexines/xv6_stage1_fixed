@@ -1,3 +1,4 @@
+#include "signal.h"
 // Segments in proc->gdt.
 #define NSEGS     7
 
@@ -66,6 +67,10 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+  sighandler_t sighandlers[2]; // Signal handlers for process
+  int alarm;                   // alarm triggered when > 0
+  int ticks;                   // number of ticks until alarm triggered
+
 };
 
 // Process memory is laid out contiguously, low addresses first:
