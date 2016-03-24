@@ -1,8 +1,8 @@
 #ifndef XV6_SIGNAL
 #define XV6_SIGNAL
 
-+#define SIGALRM 0
-+#define SIGFPE 1
+#define SIGALRM 0
+#define SIGFPE 1
 
 //function pointer for the handler
 typedef void (*sighandler_t) (siginfo_t);

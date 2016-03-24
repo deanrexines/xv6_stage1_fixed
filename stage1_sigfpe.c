@@ -20,8 +20,8 @@ void handle_signal(siginfo_t info)
 
 int main(int argc, char *argv[])
 {
-	//int x = 5;
-	//int y = 0;
+	int x = 5;
+	int y = 0;
 
 	signal(SIGFPE, handle_signal);
 

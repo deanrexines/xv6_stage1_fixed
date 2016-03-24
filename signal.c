@@ -8,12 +8,9 @@
 int
 main(int argc, char *argv[])
 {
-    printf(1, "Calling system call signal\n");
+    printf(1, "System call signal...\n");
     //signal();
     signal(SIGFPE, &func);
-    printf(1, "Signal system call complete\n");
-    int sum = 1;
-	sum--;
-	sum = 1/sum;
+    printf(1, "Signal system call completed.\n");
     exit(); // Try return next
 }
