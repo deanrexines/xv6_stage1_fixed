@@ -103,17 +103,26 @@ sys_halt(void)
   return 0;
 }
 
+// Send a signal (currently just here for the sake of adding a system call)
+int
+sys_signal(void)
+{
+    return 0;
+}
+
 // Register a signal handler
 sighandler_t
 sys_register_signal_handler(void)
 {
     int sig;
     sighandler_t handler;
-    
+    // get signnum from arg
+
     if (argint(0, &sig) < 0 || argint(1, (int *)&handler) < 0) {
         cprintf("Argument error\n");
-        return (sighandler_t) - 1;
+        return (sighandler_t)-1;
     }
+
     sighandler_t prev = proc->sighandlers[sig];
     proc->sighandlers[sig] = handler;
 

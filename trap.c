@@ -64,7 +64,7 @@ trap(struct trapframe *tf)
       acquire(&ptable.lock);
       for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
           if (p->ticks > 0) {
-              p->--ticks;
+              p->ticks--;
               if (p->ticks == 0) {
                   p->alarm = 1;
               }
@@ -99,11 +99,12 @@ trap(struct trapframe *tf)
     case T_DIVIDE:
     cprintf("Divide by 0 exception\n");
     // Check if the process has a SIGFPE handler
-      if (!(proc->sighandlers[SIGFPE] < 0)) {
+    if (!(proc->sighandlers[SIGFPE] < 0)) {
         send_signal(tf, SIGFPE);
         break;
     }
     cprintf("No signal handler found\n");
+    // If not let it fall through
    
   //PAGEBREAK: 13
   default:
@@ -133,8 +134,9 @@ trap(struct trapframe *tf)
     exit();
 
   void 
-  send_signal(struct trapframe *tf, int signum) {
-    cprintf("send signal called\n");
+  send_signal(struct trapframe *tf, int signum) 
+  {
+
     siginfo_t info;
     info.signum = signum;
     int decr = 0;
@@ -147,7 +149,7 @@ trap(struct trapframe *tf)
     *((uint *)(tf->esp - decr)) = tf->eip;
     tf->esp-=decr;
     tf->eip = (uint) proc->sighandlers[signum];
-}
+  }
 
 
   // Force process to give up CPU on clock tick.

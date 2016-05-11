@@ -7,7 +7,7 @@
 //function pointer for the handler
 typedef void (*sighandler_t) (siginfo_t);
 
-typedef struct  {
+typedef struct {
 	//defines which signal 
 	//number is being caught
     int signum;
