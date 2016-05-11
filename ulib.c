@@ -110,5 +110,5 @@ sighandler_t register_signal_handler(int signum, sighandler_t handler);
 sighandler_t
 signal(int signum, sighandler_t handler) {
     printf(1, "0x%x", handler);
-    return reg_signal(signum, handler);
+    return register_signal_handler(signum, handler);
 }

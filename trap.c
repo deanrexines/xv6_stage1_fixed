@@ -16,6 +16,20 @@ uint ticks;
 void send_signal(struct trapframe *tf, int signum);
 
 void
+send_signal(struct trapframe *tf, int signum)
+{
+	siginfo_t info;
+	info.signum = signum;
+	int decr = 0;
+	decr += sizeof(siginfo_t);
+	*((siginfo_t *)(tf->esp - decr)) = info;
+	decr += 4;
+	*((uint *)(tf->esp - decr)) = tf->eip;
+	tf->esp-=decr;
+	tf->eip = (uint) proc->sighandlers[signum];
+}
+
+void
 tvinit(void)
 {
   int i;
@@ -132,25 +146,6 @@ trap(struct trapframe *tf)
   // until returns with system call
   if(proc && proc->killed && (tf->cs&3) == DPL_USER)
     exit();
-
-  void 
-  send_signal(struct trapframe *tf, int signum) 
-  {
-
-    siginfo_t info;
-    info.signum = signum;
-    int decr = 0;
-
-    decr += sizeof(siginfo_t);
-    *((siginfo_t *)(tf->esp - decr)) = info;
-    
-    // Set return eip to trap frame eip
-    decr += 4;
-    *((uint *)(tf->esp - decr)) = tf->eip;
-    tf->esp-=decr;
-    tf->eip = (uint) proc->sighandlers[signum];
-  }
-
 
   // Force process to give up CPU on clock tick.
   // If interrupts were on while locks held, would need to check nlock.
